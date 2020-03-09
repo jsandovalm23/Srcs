@@ -1,0 +1,260 @@
+---Resumen de las Quest
+
+[*]Estructura de una quest
+
+	quest capidos begin				-----> Encabezado de la quesy seguido del nombre de la quest se recomienda que sea el mismo del archivo que se crea.
+		state start begin			-----> Indica que la quest empieza aquí
+			when login begin		-----> Pregunta por algo que esta pasando en este caso pregunta por un login es decir si un personaje se conecto.
+				 chat("Bienvenido al servidor, pasalo bien")		-----> La acción que se realiza en al quest.
+			end						-----> Finaliza la acción
+		end							-----> Finaliza el estado
+	end								-----> Finaliza la quest
+	
+[*]	Comentarios 
+
+	Se hacen con un -- 
+[*] Variables
+
+	local nombre = variable			-----> Nos sirve para almacenar datos. Ejemplo local nivel = pc.get_level()
+	local texto = input()
+	local numero = math.random(1,100)
+	local s = select ("opcion1" , "opcion2" , "opcion3")			----->	Sirve para colocar botones en los mensajes
+	if s == 1 then						----->	Sirve para preguntar por cual de las opciones se le dió clic es decir a la opcion1 corresponde el 1 a la opcion2 corresponde el 2 y asi sucesivamente con la cantidad de opciones que se coloquen.
+	
+	
+[*] Estados de las quest
+	
+	start						----->  Estado de inicio de una quest.
+	setstate("nombre estado")	----->	Cambiar de estado. Tambien se usa la funcion set_state("nombre estado")
+	set_quest_state(,)		----->	Cambiar el estado de una quest distinta. Recordando que el nombre y el estado van dentro de comillas "" asi: set_quest_state("nombre", "estado")	
+	
+	Ejemplo de estados:
+	quest capidos begin				-----> Encabezado de la quesy seguido del nombre de la quest se recomienda que sea el mismo del archivo que se crea.
+		state start begin			-----> Indica que la quest empieza aquí
+			when login begin		-----> Pregunta por algo que esta pasando en este caso pregunta por un login es decir si un personaje se conecto.
+				 setstate("run")	----->	Ejecuta el cambio de STATE
+			end						-----> Finaliza la acción
+		end							-----> Finaliza el estado
+		state run begin				-----> Indica que la quest empieza aquí
+			when enter begin		-----> Se usa para que las acciones se hagan cuando se entra al estado.
+				chat("Has entrado al state.")
+			end			
+			when leave begin		----->	Se usa para que las acciones se hagan cuando se finaliza o sale del estado.
+				chat("Has salido del state.")
+			end
+			when login begin		-----> Pregunta por algo que esta pasando en este caso pregunta por un login es decir si un personaje se conecto.
+				 return				-----> Finaliza la quest
+			end						-----> Finaliza la acción
+		end							-----> Finaliza el estado
+	end								-----> Finaliza la quest
+	
+[*] Operadores lógicos
+
+	when				----->  sirve para comenzar acciones.
+	while				----->  sirve para comenzar acciones.
+	with				----->	poner condiciones.
+	and					----->	poner condiciones.
+	or					----->	poner condiciones.
+	if					----->	poner condiciones.
+	elseif				----->	poner condiciones.
+	else				----->	poner condiciones.
+	>					----->	Comparación
+	<					----->	Comparación
+	>=					----->	Comparación
+	<=					----->	Comparación
+	==					----->	Comparación
+	~=					----->	Comparación
+[*] Estructura de un IF
+	if [X] then
+		accion1
+	else if [X2] then
+		accion2
+	end
+[*] Estructura de un when
+	when condiciones begin
+		accion
+	end
+
+[*] Ciclos o Bucles
+	Un BUCLE se puede romper con la palabra break
+	
+	[*] Bucle 1
+		repeat
+			bloque de sentencias
+		until (condición)
+		
+	[*] Bucle 2
+		while (condición) do
+			bloque de sentencias
+		end
+		-- BUCLE INFINITO
+		while true do
+			bloque
+		end
+		-- FIN DE BUCLE INFINITO
+	[*] Bucle 3
+		for var = start, stop , aumento do
+			bloque de sentencias
+		end
+	[*] Bucle 4
+		-- FOR PARA ARRAY
+		local tab = {"valor1", "valor2", "valor3"}
+		for k, v in ipairs(tab) do
+			say(k.." = "..v)
+		end --for
+		-- FIN FOR PARA ARRAY
+	
+[*]	Arrays
+	
+	local nombrearray = {10,20,34,43,57}			----->	Array simple 
+	nombrearray[1]									----->	Trae el contenido del array en la posición 1 en esta caso 10.
+	EJEMPLO:
+			local items = {160,161,162,163}
+			for i=1, table.getn(items) do -- en la i ponemos igual a 1 y luego la cantidad de veces que se repita
+				pc.give_item2(items[i]) -- te dara cada uno de los items que haya en la tabla
+			end -- cada for le corresponde un end
+	
+	local nombre = { -- abres la tabla
+		{} -- subcategoria 1
+		{} -- subcategoria 2
+		{} -- subcategoria 3
+	} -- cierras la tabla
+	
+	Una subcategoría sirve para agrupar una cantidad de elementos en si y para obtener los elementos se hace:
+		nombre[subcategoria][posicion]
+	
+	Ejemplo:
+			local cordes = {
+				{12500,13400,17500,14000},
+				{12400,18900,13200}
+			}
+			cordes[1][4] -- 14000
+			cordes[2][2] -- 18900
+	EJEMPLO PRACTICO 1:
+						local cordes = {
+							{12500,13400},
+							{12400,18900},
+							{19800,12300}
+						}
+						pc.warp(cordes[1][1],cordes[1][2]) -- 12500, 13400
+	
+	EJEMPLO PRACTICO 2:
+						say("Que arma quieres")
+						say("")
+						local items = {
+							{160,2},
+							{161,1},
+							{162,3}
+						}
+						local arma = select ("Ninfa +0" , "Ninfa +1" , "Ninfa +2" , "Cerrar")
+						if arma == table.getn(items)+1 then 
+							return 
+						end
+						pc.give_item2(items[arma][1],items[arma][2])
+	
+	
+[*]Mostrar Texto En El Cliente
+
+	chat("mensaje")							----->	Mostrar chat de infromación en el chat general. Solo lo ve el personaje que se conecta.
+	notice_all("mensaje")					----->	Mostrar a todos los personajes Conectados.
+	say_title("mensaje")					----->	Mensaje en forma de título
+	say("mensaje")							----->	Mensaje que muestra el texto que se desea. Est mensaje es mostrado en un recuadro en medio de la pantalla.
+	say_reward("mensaje")					----->	Mensaje en forma de recompensa con color distinto.
+
+	
+	
+[*] Datos Curiosos.
+	math.random(numero incial,numero final)	----->	Funcion que devuelve un número aleatorio entre el numero inicial y el numero final que se establezca.
+	pc									----->	Es el usuario o personaje que esta conectado.
+	pc.get_level()						----->	Obteiene el nivel de un personaje.
+	login								----->	Acción que se da al conectarse un personaje.
+	logout								----->	Acción que se da al desconectarse un personaje.
+	when vnum.chat."texto de opcion" begin		----->	Se utiliza para activar la quest cuando le da en una opcion de un lista de opciones. Es decir, cuando se le da clic en la opcion "texto de opcion" del npv o item del vnum.
+	pc.count_item("vnum")				----->	Sirve para comprobar si el personaje tiene el item correspondiente al venum en su inventario.
+	
+	vnum.chat."texto"					----->	Al darle clic en la npc con el vnum se abre un dialogo con opciones. Al dar click en la opción que contiene el texto empieza el contenido del when.
+	vnum.click							----->	Al hacer click en el npc del vnum, empieza el contenido del when.
+	vnum.click							----->	Al hacer click en el npc, empieza el contenido del when.
+	kill								----->	Cuando el jugador mata un enemigo, comienza el contenido del when.
+	when vnum.kill begin				----->	Indica si el monstruo que le corresponde el vnum esta muerto
+	party_kill							----->	Cuando un miembro del grupo mata a un enemigo inicia el contenido del when.
+	vnum.party_kill						----->	Cuando un miembro del grupo mata a aun enemigo con vnum, empieza el contenido del when.
+	X.target.click						----->	Cuando haces click al tarjet de nombre X empieza el contenido del when.
+	X.target.arrive						----->	Cuando llegas al punto con el tarje de nombre X empieza el contenido del when.
+	pc.get_map_index == codigomapa		----->	Indica si el personaje esta en el mapa de codigomapa
+	pc.get_max_hp						----->	Se puede preguntar por el nivel de hp que tienes.
+	pc.is_mount							----->	Se puede preguntar si estas montado en una montura o no.
+	when condicion1 with condicion2 and condicion3 begin ----> Estrctura para 2 o mas condiciones 
+	pc.get_empire()						----->	Se puede preguntar en que reino estas.
+	vnum.use							----->	Cuando se una un el item del vnum se activa esta quest
+	pc.give_item2("vnum", cantidad)		----->	Se utiliza para dar un item al inventario del personaje.
+	return								----->	Accion que se utiliza en la accion de un boton de cancelar o cerrar. Y sirve para cerrar la ventana de la quest.
+	pc.change_money(-cantidad)			----->	Acción que sirve para disminuir o aumentar la cantidad de yang de un personaje.
+	pc.remove_item(vnum, cantidad) 		----->	Accion que sirve para remover un item del inventario del personaje.
+	pc.gold								----->	Pregunta por la cantidad de yang que tiene el personaje.
+	pc.get_sex()						-----> 	Obtiene el sexo de un personaje. Se compara 1 hombre 2 mujer.
+	say_item_vnum(vnum)					----->	Muestra 1 item con su imagen.
+	pc.count_item(vnum)					----->	Cuenta cuantos items hay.
+	mob_name(vnum)						----->	Nombre de un monstruo
+	pc.getname()						----->	Obtener el nombre del personaje.
+	
+	
+	---------------------------------------------------------------------------------------------------------------------------------------------
+	¡¡¡¡¡IMPORTANTE !!!!
+	EL JUEGO ALMACENA PARA SIEMPRE LOS VALORES DE LOS SIGUIENTES COMANDOS
+	pc.setqf							----->	 nos permite asignar un determinado valor a un personaje de modo que podamos usar el comando pc.getqf para crear condiciones que impliquen que el personaje tenga ese valor concreto para activarse. pc.setqf("nombredelqf", valor) otra forma pc.setqf("kekomola",	pc.getqf("kekomola") + 1)
+		ejemplo:
+				pc.setqf("kekomola", 2)							--> valor fijo
+				pc.setqf("kekomola", pc.getqf("kekomola") + 1) ---> Cada que se use aumenta 1
+	pc.getqf							----->	Chekea que valor tiene el comando anterior
+		ejemplo:
+				if pc.getqf("kekomola") == 5 then   ----> se comprueba el valor de kemola que es el valor que se acumulo en el comando anterior.
+	
+	
+		Ejemplo combinado:
+							quest item begin
+								state start begin
+									when 70045.use begin
+										pc.setqf("buenas", pc.getqf("buenas") + 1)
+										if pc.getqf("buenas") == 1 then
+											chat("buenas")
+										elseif pc.getqf("buenas") == 2 then
+											chat("que tal")
+										elseif pc.getqf("buenas") >= 3 then
+											chat("me aburro")
+										end
+									end
+								end
+							end
+		Ejemplo Practico:
+							quest muertes begin
+								state start begin
+									when kill with not npc.is_pc() begin
+										pc.setqf("mobs", pc.getqf("mobs") + 1)
+										chat("LLevas "..pc.getqf("mobs").." matados en tu juego")
+									end
+								end
+							end
+	---------------------------------------------------------------------------------------------------------------------------------------------
+	horse.unsummon()						----->	 Nos permite guardar el Caballo
+	horse.summon()							----->	 Nos permite sacar el caballo
+	horse.set_level(nivel)						----->	 Asigna un nivel al caballo
+	
+	
+
+	letter : Relacionado con las letters (explicación en otro capitulo).
+	button : Relacionado con las letters (explicación en otro capitulo).
+	info : Relacionado con las letters (explicación en otro capitulo).
+	nombre.timer : Cuando el timer llamado con nombre llega a 0, empieza el contenido del when.
+	nombre.server_timer : Cuando el server_timer llamado con nombre llega a 0, empieza el contenido del when.
+	
+	
+	
+	
+	----------------------
+	Como hago yo para saber que valor tiene en el qf cierto personaje? es decir puedo poner una ques con el mismo nombre del qf para todos los personajes? y si es así como hago yo para saber con otra quest distinta que valor del qf tiene un personaje X ?
+	pc.getf('nombrequest','nombreqf')
+	pc.getqf = get playing character quest flag
+	pc.getf = get playing character flag
+	-----------------------
+	
